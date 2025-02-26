@@ -12,11 +12,6 @@ class Experiment:
             raise TypeError("Input must be a SignalDetection object.")
         self.conditions.append((sdt_obj, label))
 
-    def add_condition(self, sdt_obj: SignalDetection, label: str = None) -> None:
-        if not isinstance(sdt_obj, SignalDetection):
-            raise TypeError("Input must be a SignalDetection object.")  # TypeError is more appropriate 
-        self.conditions.append((sdt_obj, label))
-
 
     def sorted_roc_points(self) -> tuple[list[float], list[float]]:
         if not self.conditions:
