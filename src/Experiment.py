@@ -1,6 +1,5 @@
 import numpy as np
 import matplotlib.pyplot as plt
-# from sklearn.metrics import auc    # https://stackoverflow.com/questions/66397641/which-is-the-correct-way-to-calculate-auc-with-scikit-learn
 from SignalDetection import SignalDetection
 
 
@@ -11,6 +10,11 @@ class Experiment:
     def add_condition(self, sdt_obj: SignalDetection, label: str = None) -> None:
         if not isinstance(sdt_obj, SignalDetection):
             raise TypeError("Input must be a SignalDetection object.")
+        self.conditions.append((sdt_obj, label))
+
+    def add_condition(self, sdt_obj: SignalDetection, label: str = None) -> None:
+        if not isinstance(sdt_obj, SignalDetection):
+            raise TypeError("Input must be a SignalDetection object.")  # TypeError is more appropriate
         self.conditions.append((sdt_obj, label))
 
 

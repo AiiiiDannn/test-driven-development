@@ -1,7 +1,7 @@
 import unittest
 from SignalDetection import SignalDetection
 from Experiment import Experiment
-from sklearn.metrics import auc    # https://stackoverflow.com/questions/66397641/which-is-the-correct-way-to-calculate-auc-with-scikit-learn
+import numpy as np
 
 
 class TestExperiment(unittest.TestCase):
@@ -87,6 +87,25 @@ class TestExperiment(unittest.TestCase):
         self.exp.add_condition(sdt2, "(0,1)")
         self.exp.add_condition(sdt3, "(1,1)")
         self.assertAlmostEqual(self.exp.compute_auc(), 1.0, places=3)
+
+    def test_compute_auc_general_case(self):
+        sdt1 = SignalDetection(3, 7, 4, 6)
+        sdt2 = SignalDetection(10, 2, 6, 8)
+        sdt3 = SignalDetection(18, 2, 12, 8) 
+        sdt4 = SignalDetection(25, 5, 20, 10) 
+        
+        self.exp.add_condition(sdt1, "A")
+        self.exp.add_condition(sdt2, "B")
+        self.exp.add_condition(sdt3, "C")
+        self.exp.add_condition(sdt4, "D")
+
+        # Using SKLearn's AUC implementation to compare our results
+        fa_rates, h_rates = self.exp.sorted_roc_points()
+        manual_auc = self.exp.compute_auc()
+        numpy_auc = np.trapezoid(h_rates, fa_rates)
+
+        self.assertAlmostEqual(manual_auc, numpy_auc, places=3)
+
 
     def test_compute_auc_with_empty_conditions(self):
         with self.assertRaises(ValueError):
