@@ -54,9 +54,9 @@ class TestExperiment(unittest.TestCase):
         sdt2 = SignalDetection(5, 5, 10, 5)
         sdt3 = SignalDetection(8, 2, 3, 12)
 
-        self.exp.add_condition(sdt3, "C")
         self.exp.add_condition(sdt1, "A")
         self.exp.add_condition(sdt2, "B")
+        self.exp.add_condition(sdt3, "C")
 
         fa_rates, h_rates = self.exp.sorted_roc_points()
         self.assertEqual(fa_rates, sorted(fa_rates))
