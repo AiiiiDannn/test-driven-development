@@ -14,7 +14,7 @@ class Experiment:
 
     def add_condition(self, sdt_obj: SignalDetection, label: str = None) -> None:
         if not isinstance(sdt_obj, SignalDetection):
-            raise TypeError("Input must be a SignalDetection object.")  # TypeError is more appropriate
+            raise TypeError("Input must be a SignalDetection object.")  # TypeError is more appropriate 
         self.conditions.append((sdt_obj, label))
 
 

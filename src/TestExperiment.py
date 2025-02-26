@@ -60,7 +60,7 @@ class TestExperiment(unittest.TestCase):
         fa_rates, h_rates = self.exp.sorted_roc_points()
         self.assertEqual(fa_rates, sorted(fa_rates))
 
-        # Ensure hit rates are correctly paired with the FA rates
+        # Ensure hit rates are correctly paired with the FA rates 
         expected_pairs = list(zip(fa_rates, h_rates))
         actual_pairs = list(zip(*self.exp.sorted_roc_points()))
         self.assertEqual(actual_pairs, expected_pairs)
@@ -99,7 +99,7 @@ class TestExperiment(unittest.TestCase):
         self.exp.add_condition(sdt3, "C")
         self.exp.add_condition(sdt4, "D")
 
-        # Using SKLearn's AUC implementation to compare our results
+        # Using numpy to compute AUC for comparison
         fa_rates, h_rates = self.exp.sorted_roc_points()
         manual_auc = self.exp.compute_auc()
         numpy_auc = np.trapezoid(h_rates, fa_rates)
