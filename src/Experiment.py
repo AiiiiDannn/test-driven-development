@@ -52,18 +52,29 @@ class Experiment:
 
         false_alarm_rates, hit_rates = self.sorted_roc_points()
 
-        plt.figure(figsize=(6, 6))
-        plt.plot(
-            false_alarm_rates, hit_rates, marker="o", linestyle="-", label="ROC Curve"
-        )
-        plt.plot([0, 1], [0, 1], linestyle="--", color="gray", label="Chance Level")
-        plt.xlabel("False Alarm Rate")
-        plt.ylabel("Hit Rate")
-        plt.title("ROC Curve")
-        plt.legend()
-        plt.grid(True)
+        fig, ax = plt.subplots(figsize=(6, 6))
+        ax.plot(false_alarm_rates, hit_rates, marker="o", linestyle="-", label="ROC Curve")
+        ax.plot([0, 1], [0, 1], linestyle="--", color="gray", label="Chance Level")
+        ax.set_xlabel("False Alarm Rate")
+        ax.set_ylabel("Hit Rate")
+        ax.set_title("ROC Curve")
+        ax.legend()
+        ax.grid(True)
 
         if show_plot:
             plt.show()
 
-        return plt
+        return fig
+
+
+if __name__ == "__main__":
+    sdt1 = SignalDetection(10, 20, 15, 5)
+    sdt2 = SignalDetection(5, 5, 10, 5)
+    sdt3 = SignalDetection(15, 10, 10, 10)
+    exp = Experiment()
+    exp.add_condition(sdt1, "Condition A")
+    exp.add_condition(sdt2, "Condition B")
+    exp.add_condition(sdt3, "Condition C")
+    print(exp.sorted_roc_points())
+    print(exp.compute_auc())
+    exp.plot_roc_curve(show_plot=True)

@@ -2,6 +2,7 @@ import unittest
 from SignalDetection import SignalDetection
 from Experiment import Experiment
 import numpy as np
+import matplotlib.pyplot as plt
 
 
 class TestExperiment(unittest.TestCase):
@@ -110,6 +111,31 @@ class TestExperiment(unittest.TestCase):
     def test_compute_auc_with_empty_conditions(self):
         with self.assertRaises(ValueError):
             self.exp.compute_auc()
+
+
+    # Test plot_roc_curve
+    def test_plot_roc_curve(self):
+        sdt1 = SignalDetection(10, 0, 5, 10)
+        sdt2 = SignalDetection(5, 5, 10, 5)
+        
+        self.exp.add_condition(sdt1, "Condition A")
+        self.exp.add_condition(sdt2, "Condition B")
+        
+        plt_obj = self.exp.plot_roc_curve(show_plot=False)
+
+        self.assertIsInstance(plt_obj, plt.Figure)
+
+        ax = plt_obj.gca()
+        lines = ax.get_lines()
+        self.assertEqual(len(lines), 2)  # Should have 2 lines (ROC curve + diagonal)
+
+        self.assertEqual(ax.get_xlabel(), "False Alarm Rate")
+        self.assertEqual(ax.get_ylabel(), "Hit Rate")
+        self.assertEqual(ax.get_title(), "ROC Curve")
+
+    def test_plot_roc_curve_with_empty_conditions(self):
+        with self.assertRaises(ValueError):
+            self.exp.plot_roc_curve(show_plot=False)
 
 
 
