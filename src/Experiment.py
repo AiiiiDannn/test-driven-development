@@ -63,13 +63,10 @@ class Experiment:
 
 
 if __name__ == "__main__":
-    sdt1 = SignalDetection(10, 20, 15, 5)
-    sdt2 = SignalDetection(5, 5, 10, 5)
-    sdt3 = SignalDetection(15, 10, 10, 10)
+    sdt1 = SignalDetection(10, 20, 15, 5)    # FA = 0.75, HR = 0.33
+    sdt2 = SignalDetection(5, 5, 10, 5)    # FA = 0.67, HR = 0.5
     exp = Experiment()
     exp.add_condition(sdt1, "Condition A")
     exp.add_condition(sdt2, "Condition B")
-    exp.add_condition(sdt3, "Condition C")
     print(exp.sorted_roc_points())
     print(exp.compute_auc())
-    exp.plot_roc_curve(show_plot=True)

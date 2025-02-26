@@ -50,9 +50,9 @@ class TestExperiment(unittest.TestCase):
     # Test sorted_roc_points
 
     def test_sorted_roc_points(self):
-        sdt1 = SignalDetection(10, 0, 5, 10)
-        sdt2 = SignalDetection(5, 5, 10, 5)
-        sdt3 = SignalDetection(8, 2, 3, 12)
+        sdt1 = SignalDetection(10, 0, 5, 10)    # FA = 0.33, HR = 1.0
+        sdt2 = SignalDetection(5, 5, 10, 5)     # FA = 0.67, HR = 0.5
+        sdt3 = SignalDetection(8, 2, 3, 12)     # FA = 0.2, HR = 0.8
 
         self.exp.add_condition(sdt1, "A")
         self.exp.add_condition(sdt2, "B")
@@ -62,7 +62,7 @@ class TestExperiment(unittest.TestCase):
         self.assertEqual(fa_rates, sorted(fa_rates))
 
         # Ensure hit rates are correctly paired with the FA rates 
-        expected_pairs = list(zip(fa_rates, h_rates))
+        expected_pairs = sorted([(sdt.false_alarm_rate(), sdt.hit_rate()) for sdt, _ in self.exp.conditions])    # Sort by FA rate, suggested by ChatGPT
         actual_pairs = list(zip(*self.exp.sorted_roc_points()))
         self.assertEqual(actual_pairs, expected_pairs)
     
@@ -74,14 +74,14 @@ class TestExperiment(unittest.TestCase):
     # Test compute_auc
 
     def test_compute_auc_known_cases(self):
-        sdt1 = SignalDetection(0, 0, 0, 0)
+        sdt1 = SignalDetection(0, 10, 0, 10)
         sdt2 = SignalDetection(10, 0, 10, 0)
         self.exp.add_condition(sdt1, "(0,0)")
         self.exp.add_condition(sdt2, "(1,1)")
         self.assertAlmostEqual(self.exp.compute_auc(), 0.5, places=3)
 
     def test_compute_auc_perfect_case(self):
-        sdt1 = SignalDetection(0, 0, 0, 0)
+        sdt1 = SignalDetection(0, 10, 0, 10)
         sdt2 = SignalDetection(10, 0, 0, 10)
         sdt3 = SignalDetection(10, 0, 10, 0)
         self.exp.add_condition(sdt1, "(0,0)")
