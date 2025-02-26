@@ -10,7 +10,7 @@ class Experiment:
 
     def add_condition(self, sdt_obj: SignalDetection, label: str = None) -> None:
         if not isinstance(sdt_obj, SignalDetection):
-            raise ValueError("Input must be a SignalDetection object.")
+            raise TypeError("Input must be a SignalDetection object.")
         self.conditions.append((sdt_obj, label))
 
 
@@ -47,7 +47,7 @@ class Experiment:
             raise ValueError("No conditions added to the experiment")
 
         false_alarm_rates, hit_rates = self.sorted_roc_points()
-        
+
         plt.figure(figsize=(6, 6))
         plt.plot(
             false_alarm_rates, hit_rates, marker="o", linestyle="-", label="ROC Curve"

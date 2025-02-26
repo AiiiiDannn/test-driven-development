@@ -42,7 +42,7 @@ class TestExperiment(unittest.TestCase):
         self.assertIsNone(self.exp.conditions[0][1])
     
     def test_add_invalid_condition(self):
-        with self.assertRaises(ValueError):
+        with self.assertRaises(TypeError):
             self.exp.add_condition("invalid_object", "Invalid")
 
 
